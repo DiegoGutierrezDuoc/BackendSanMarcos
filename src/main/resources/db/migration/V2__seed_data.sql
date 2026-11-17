@@ -9,3 +9,13 @@ INSERT INTO productos (nombre, precio, especie, imagen, descripcion, stock) VALU
 
 INSERT INTO pedidos (cliente_id, producto_id, cantidad, total, estado) VALUES
     (2, 1, 1, 34990, 'CONFIRMADO');
+
+INSERT INTO mascotas (nombre, especie, raza, edad, cliente_id) VALUES
+                                                                   ('Max', 'Perro', 'Golden Retriever', 4, 1),
+                                                                   ('Luna', 'Gato', 'Siamés', 2, 1),
+                                                                   ('Rocky', 'Perro', 'Bulldog Francés', 1, 2);
+
+INSERT INTO citas (fecha_hora, motivo, estado, mascota_id) VALUES
+                                                               ('2026-11-20 10:00:00', 'Vacunación anual y chequeo general', 'PENDIENTE', 1),
+                                                               ('2026-11-21 15:30:00', 'Control dermatológico', 'PENDIENTE', 2),
+                                                               ('2026-11-15 09:00:00', 'Desparasitación interna', 'ATENDIDO', 3);

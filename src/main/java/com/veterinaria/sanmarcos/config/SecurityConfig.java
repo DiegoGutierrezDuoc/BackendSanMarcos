@@ -26,14 +26,13 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/api/auth/**", "/swagger-custom.css").permitAll()
                         .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/productos/**").permitAll()
-                        .requestMatchers("/api/mascotas/**", "/api/citas/**").permitAll()
+                        .requestMatchers("/api/clientes/**", "/api/productos/**", "/api/mascotas/**", "/api/citas/**", "/api/pedidos/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-
 
         return http.build();
     }

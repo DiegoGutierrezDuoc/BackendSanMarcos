@@ -3,7 +3,9 @@ package com.veterinaria.sanmarcos.service;
 import com.veterinaria.sanmarcos.entity.Cliente;
 import com.veterinaria.sanmarcos.repository.ClienteRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
@@ -11,6 +13,7 @@ import java.util.List;
 public class ClienteService {
 
     private final ClienteRepository clienteRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public List<Cliente> listarTodos() {
         return clienteRepository.findAll();
@@ -25,6 +28,10 @@ public class ClienteService {
         if (clienteRepository.existsByCorreo(cliente.getCorreo())) {
             throw new RuntimeException("El correo ya está registrado");
         }
+        cliente.setPassword(passwordEncoder.encode(cliente.getPassword()));
+        if (cliente.getRol() == null || cliente.getRol().isBlank()) {
+            cliente.setRol("cliente");
+        }
         return clienteRepository.save(cliente);
     }
 
@@ -33,7 +40,7 @@ public class ClienteService {
         existente.setNombre(datos.getNombre());
         existente.setMascota(datos.getMascota());
         if (datos.getPassword() != null && !datos.getPassword().isBlank()) {
-            existente.setPassword(datos.getPassword());
+            existente.setPassword(passwordEncoder.encode(datos.getPassword()));
         }
         return clienteRepository.save(existente);
     }

@@ -1,6 +1,8 @@
 package com.veterinaria.sanmarcos.controller;
 
 import com.veterinaria.sanmarcos.entity.Cita;
+import com.veterinaria.sanmarcos.entity.Mascota;
+import com.veterinaria.sanmarcos.repository.MascotaRepository;
 import com.veterinaria.sanmarcos.service.CitaService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -10,6 +12,7 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,13 +20,14 @@ import java.util.stream.Collectors;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 @RestController
-@RequestMapping("/api/citas")
+@RequestMapping("/api/v1/citas")
 @CrossOrigin(origins = "http://localhost:5173")
 @RequiredArgsConstructor
 @Tag(name = "Citas", description = "Gestión de citas médicas veterinarias")
 public class CitaController {
 
     private final CitaService citaService;
+    private final MascotaRepository mascotaRepository;
 
     @GetMapping
     @Operation(summary = "Listar todas las citas médicas (con enlaces HATEOAS)")
@@ -63,12 +67,26 @@ public class CitaController {
     @PostMapping
     @Operation(summary = "Agendar una nueva cita médica")
     public ResponseEntity<Cita> crear(@RequestBody Cita cita) {
+        Long mascotaId = (cita.getMascota() != null) ? cita.getMascota().getId() : null;
+        if (mascotaId == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Debe seleccionar una mascota válida");
+        }
+
+        Mascota mascota = mascotaRepository.findById(mascotaId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Mascota no encontrada"));
+
+        cita.setMascota(mascota);
         return ResponseEntity.status(HttpStatus.CREATED).body(citaService.guardar(cita));
     }
 
     @PutMapping("/{id}")
     @Operation(summary = "Actualizar una cita médica")
     public ResponseEntity<Cita> actualizar(@PathVariable Long id, @RequestBody Cita cita) {
+        if (cita.getMascota() != null && cita.getMascota().getId() != null) {
+            Mascota mascota = mascotaRepository.findById(cita.getMascota().getId())
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Mascota no encontrada"));
+            cita.setMascota(mascota);
+        }
         return ResponseEntity.ok(citaService.actualizar(id, cita));
     }
 

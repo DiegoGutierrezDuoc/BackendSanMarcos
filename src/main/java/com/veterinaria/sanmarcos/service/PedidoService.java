@@ -29,19 +29,33 @@ public class PedidoService {
     }
 
     public Pedido crearPedido(Pedido pedido) {
-        Cliente cliente = clienteRepository.findById(pedido.getCliente().getId())
-                .orElseThrow(() -> new RuntimeException("Cliente no encontrado"));
-        Producto producto = productoRepository.findById(pedido.getProducto().getId())
+        Cliente cliente;
+        if (pedido.getCliente() != null && pedido.getCliente().getId() != null) {
+            cliente = clienteRepository.findById(pedido.getCliente().getId())
+                    .orElseThrow(() -> new RuntimeException("Cliente no encontrado"));
+        } else {
+            throw new RuntimeException("Cliente no asociado al pedido");
+        }
+
+        Long productoId = (pedido.getProducto() != null) ? pedido.getProducto().getId() : null;
+        if (productoId == null) {
+            throw new RuntimeException("Producto no asociado al pedido");
+        }
+
+        Producto producto = productoRepository.findById(productoId)
                 .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
 
         pedido.setCliente(cliente);
         pedido.setProducto(producto);
+
         int cantidad = (pedido.getCantidad() != null && pedido.getCantidad() > 0) ? pedido.getCantidad() : 1;
         pedido.setCantidad(cantidad);
         pedido.setTotal(producto.getPrecio() * cantidad);
+
         if (pedido.getEstado() == null) {
             pedido.setEstado(EstadoPedido.PENDIENTE);
         }
+
         return pedidoRepository.save(pedido);
     }
 

@@ -1,6 +1,6 @@
 INSERT INTO clientes (nombre, correo, mascota, password, rol) VALUES
-                                                                  ('Administrador San Marcos', 'admin@veterinaria.cl', 'Max', 'admin123', 'admin'),
-                                                                  ('Juan Pérez', 'juan@duocuc.cl', 'Cachupín', '123456', 'cliente');
+                                                                  ('Administrador San Marcos', 'admin@veterinaria.cl', 'Max', '$2a$10$IjgzzFCsR3RwHrNuTtYMyuCLfuHdVJT5wxPc3a8vK2s0GiEJo8Phe', 'admin'),
+                                                                  ('Juan Pérez', 'juan@duocuc.cl', 'Cachupín', '$2a$10$kB6sXoIvUSxf3RTfwMdf7.9QcfMiu3ynJ2nTN4FLm65SPruB/zsW.', 'cliente');
 
 INSERT INTO productos (nombre, precio, especie, imagen, descripcion, stock) VALUES
                                                                                 ('Alimento Premium Perro Adulto 15kg', 34990, 'Canino', '/img/producto1.avif', 'Nutrición completa y balanceada para perros adultos de todas las razas.', 20),

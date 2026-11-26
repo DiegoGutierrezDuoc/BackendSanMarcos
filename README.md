@@ -1,18 +1,18 @@
 # 🐾 BackendSanMarcos — API RESTful Veterinaria San Marcos
 
-Plataforma backend RESTful desarrollada en **Java 17** y **Spring Boot 4.1.2** para la gestión integral de clientes, catálogo de productos veterinarios y pedidos[cite: 2, 13]. Incluye autenticación basada en **JWT**, hipermedia **Spring HATEOAS**, migraciones versionadas con **Flyway** y documentación interactiva personalizada en **Swagger UI**[cite: 1, 2, 4, 17].
+Plataforma backend RESTful desarrollada en **Java 17** y **Spring Boot 4.1.2** para la gestión integral de clientes, catálogo de productos veterinarios, pedidos, mascotas y citas médicas. Incluye autenticación basada en **JWT**, migraciones versionadas con **Flyway** y documentación interactiva en **Swagger UI**.
 
 ---
 
 ## 🛠️ Stack Tecnológico
 
-* **Lenguaje:** Java 17
-* **Framework:** Spring Boot 4.1.2 (Web, Data JPA, Security, HATEOAS)[cite: 13]
-* **Base de Datos:** MySQL / MariaDB (XAMPP)
-* **Migraciones:** Flyway (`db/migration`)[cite: 1, 17]
-* **Seguridad:** Spring Security + JSON Web Tokens (JWT)
-* **Documentación:** SpringDoc OpenAPI / Swagger UI (con tema personalizado)[cite: 1, 2, 17]
-* **Testing:** JUnit 5, Mockito & DataFaker[cite: 1, 2]
+- **Lenguaje:** Java 17
+- **Framework:** Spring Boot 4.1.2 (Spring Web, Spring Data JPA, Spring Security)
+- **Base de Datos:** MySQL / MariaDB (XAMPP)
+- **Migraciones:** Flyway (`src/main/resources/db/migration`)
+- **Seguridad:** Spring Security + JSON Web Tokens (JWT)
+- **Documentación:** SpringDoc OpenAPI / Swagger UI (con tema personalizado)
+- **Testing:** JUnit 5, Mockito y DataFaker
 
 ---
 
@@ -22,15 +22,31 @@ Plataforma backend RESTful desarrollada en **Java 17** y **Spring Boot 4.1.2** p
 src/
 ├── main/
 │   ├── java/com/veterinaria/sanmarcos/
-│   │   ├── config/          # Configuración de OpenAPI/Swagger y Spring Security[cite: 1]
-│   │   ├── controller/      # Controladores REST (Auth, Clientes, Productos, Pedidos)[cite: 1]
-│   │   ├── dto/             # Objetos de transferencia de datos (Login, AuthResponse, etc.)[cite: 1]
-│   │   ├── entity/          # Entidades JPA (Cliente, Producto, Pedido)[cite: 1]
-│   │   ├── repository/      # Repositorios Spring Data JPA[cite: 1]
-│   │   ├── security/        # JwtUtil y JwtFilter[cite: 1]
-│   │   └── service/         # Lógica de negocio[cite: 1]
+│   │   ├── config/          # Configuración de OpenAPI/Swagger, CORS y Spring Security
+│   │   ├── controller/      # Controladores REST (Auth, Clientes, Productos, Pedidos, Mascotas, Citas)
+│   │   ├── dto/             # Objetos de transferencia de datos (Login, AuthResponse, etc.)
+│   │   ├── entity/          # Entidades JPA (Cliente, Producto, Pedido, Mascota, Cita)
+│   │   ├── repository/      # Repositorios Spring Data JPA
+│   │   ├── security/        # JwtUtil y JwtFilter
+│   │   └── service/         # Lógica de negocio
 │   └── resources/
-│       ├── db/migration/    # Scripts SQL de Flyway (V1 schema, V2 seed data)[cite: 1, 13]
-│       ├── static/          # Estilos personalizados (swagger-custom.css)[cite: 1]
-│       └── application.properties[cite: 1]
-└── test/                    # Pruebas unitarias de servicios[cite: 1]
+│       ├── db/migration/    # Scripts SQL de Flyway (V1__create_schema.sql, V2__seed_data.sql)
+│       ├── static/          # Estilos personalizados (swagger-custom.css)
+│       └── application.properties
+└── test/                    # Pruebas unitarias de servicios
+```
+## ✨ Funcionalidades y Base de Datos
+- **Entidades y migraciones Flyway:** esquema inicial (V1) y datos de prueba (V2) para clientes, productos, pedidos, mascotas y citas en MySQL.
+- **API RESTful y Swagger UI:** endpoints para autenticación, consulta y administración de recursos, documentados y probables desde Swagger UI en el puerto 8080.
+- **Autenticación y seguridad:** protección de rutas y emisión/validación de tokens mediante Spring Security y JWT.
+- **Pruebas unitarias:** suite de pruebas con JUnit 5, Mockito y DataFaker para validar la lógica de negocio.
+
+## 🚀 Ejecución Local (IntelliJ IDEA + MySQL)
+- Verifica que MySQL esté iniciado (por ejemplo desde XAMPP) y revisa la configuración de conexión en src/main/resources/application.properties.
+- Abre el proyecto en IntelliJ IDEA, espera a que carguen las dependencias y ejecuta SanmarcosApplication.
+- Comprueba en la consola que el servidor levante en http://localhost:8080 y que Flyway aplique las migraciones sin errores.
+- Accede a Swagger UI en el navegador (por ejemplo http://localhost:8080/swagger-ui/index.html) para revisar y probar los endpoints.
+
+## 🔐 Cuentas de Prueba (Datos Iniciales)
+- Administrador (admin): admin@veterinaria.cl / admin123
+- Cliente (cliente): juan@duocuc.cl / 123456
